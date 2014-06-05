@@ -44,7 +44,7 @@ my $flock;
 sub acquire_lock() {
 	print_out("Checking for lock file\n","w");
 	if ( -f $lockfile ) {
-		print STDERR "Lockfile present: $lockfile\n";
+		print STDERR "Lockfile present: $lockfile, try restarting the service\n";
 			die("Lockfile");
 		#exit(0);
 	}
@@ -254,6 +254,12 @@ sub print_out{
 	my $message = shift;
 	my $ng = shift;
 	my $ngjyra;
+#	if defined($ng){
+#		# cool 
+#	}
+#	else{
+#		$ng = "b";
+#	}
 	if(read_config("USE_SYSLOG") eq "YES"){
 		if(read_config("SYSLOG_TYPE") eq "LOCAL"){
 			openlog("COLDWAR", 'cons,pid', 'user');
@@ -277,6 +283,10 @@ sub print_out{
 	if($ng eq "o"){
 		$ngjyra = "\033[33m"; # si e verdh
 	}
+	else{
+		$ngjyra =  "\033[31m";	
+	}
+
 	print "$ngjyra $message\n\033[0m";
 }
 
@@ -309,8 +319,8 @@ sub ban_list{
 			}
 
 	$dbh->disconnect();
-	print_out("U moren ".scalar(@lips)." nga db local\n","g");
-		print_out("Blocking traffic from local database\n","b");
+	print_out("Got ".scalar(@lips)." entries from local databasse\n","g");
+		print_out("Blocking traffic from local database\n Please be patient as this might take a while","b");
 		foreach(@lips){
 			if(validate_ip($_)){
 				#print_out("Blocking traffic from :\t".$_."\n","g");
@@ -326,14 +336,14 @@ sub ban_list{
 		my $response = $ua->get($url);
 
 	if ($response->is_success) {
-		$ips = $response->decoded_content or die "snukk\n";
-			print_out("Morem ".$response->status_line." si status\n","g");
+		$ips = $response->decoded_content or die "weird stuff on the web request\n";
+			print_out("Server responded with status  ".$response->status_line." \n","g");
 			$decoded_json = decode_json( $ips );
 			#print Dumper $decoded_json;
 			foreach my $ip (@$decoded_json){
 				push(@gips,$ip->{ip});
 			}
-		print_out("U shkarkuan ".scalar(@gips)."\n","g");
+		print_out("Got ".scalar(@gips)."\n","g");
 			#exit(1);
 	}
 	else{
@@ -414,7 +424,7 @@ sub engine_status{
 	# check lockfile
 		print_out("Checking for lock file\n","g");
 		if(-f $lockfile ) {
-			print_out("Lockfile present: $lockfile\n","g");
+			print_out("Lockfile present: $lockfile\n, try restarting the service","g");
 			open FILE, $lockfile;
 			@pid = <FILE>;
 			close(FILE);
