@@ -1,0 +1,47 @@
+#main config file
+
+
+# basic config 
+BIND_INTERFACE=lo
+BIND_IP=127.0.0.7
+WHITELIST=127.0.0.3
+#PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3306,3389,5900,2307,2303,10000
+PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3389,5900,2307,2303,10000
+# 25
+# kujdes me kete pasi mund ti vere lock cdo personi qe kerkon te lidhet
+
+
+#
+COLDWAR_MODE=PROACTIVE
+#COLDWAR_MODE=MONITOR
+
+# let this AS IS, trust meh 
+BROADCAST_ALARM=YES
+UPLOAD_TO_GLOBAL=YES
+
+# to get all the feeds use this url,
+URL=http://coldwar.zero1.al/
+
+# to get your specific feed 
+#URL=http://coldwar.zero1.al/index.php?action=get&id=[yourid]
+
+# syslog support (IT DOES WORK)
+USE_SYSLOG=YES
+SYSLOG_TYPE=LOCAL
+#SYSLOG_TYPE=REMOTE
+SYSLOG_SERVER_IP=127.0.0.1
+SYSLOG_PROTO=UDP
+########## MOTREN SPO PUNON --> 
+SYSLOG_PORT=515
+
+
+# mail support 
+EMAIL_NOTIFIC=YES
+EMAIL_SERVER= smtp.googlemail.com
+EMAIL_ACCOUNT=tuwi.dc@gmail.com
+
+#EMAIL_ENC=TSL
+#EMAIL_ENC=SSL
+EMAIL_FROM=tuwi.dc@gmail.com
+EMAIL_TO=artur@zero1.al
+EMAIL_SUBJECT= COLDWAR SYSTEM ALERT 
