@@ -15,10 +15,10 @@ to gather info / exploit / infect your server.
 It has syslog support, alerting support (it will send email alerts if configured )
 
 The list of libraries used:
-	"Net::Pcap"
-	"NetPacket::Ethernet",
-	"NetPacket::IP",
-	"NetPacket::TCP",
-	"LWP::UserAgent",
-	"DBD::SQLite",				 
-	"Net::Server::PreFork"
+	"Net::Pcap" <br>
+	"NetPacket::Ethernet",<br>
+	"NetPacket::IP",<br>
+	"NetPacket::TCP",<br>
+	"LWP::UserAgent",<br>
+	"DBD::SQLite",		<br>		 
+	"Net::Server::PreFork"<br>

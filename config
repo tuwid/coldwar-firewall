@@ -8,7 +8,7 @@ WHITELIST=127.0.0.3
 #PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3306,3389,5900,2307,2303,10000
 PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3389,5900,2307,2303,10000
 # 25
-# kujdes me kete pasi mund ti vere lock cdo personi qe kerkon te lidhet
+# carefull with this as it might lock out legit people that use the service
 
 
 #
@@ -39,7 +39,7 @@ SYSLOG_PORT=515
 EMAIL_NOTIFIC=YES
 EMAIL_SERVER= smtp.googlemail.com
 EMAIL_ACCOUNT=tuwi.dc@gmail.com
-
+EMAIL_PASS= bohh
 #EMAIL_ENC=TSL
 #EMAIL_ENC=SSL
 EMAIL_FROM=tuwi.dc@gmail.com

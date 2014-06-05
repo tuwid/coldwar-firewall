@@ -10,19 +10,19 @@ use Config;
 use Sys::Syslog;
 
 
-#use Net::Pcap; # apt-get install libnet-pcap-perl (ose dicka e ngjashme)
+#use Net::Pcap; # apt-get install libnet-pcap-perl (or something similar, depending on your distro)
 #use NetPacket::Ethernet;
 #use NetPacket::IP;
 #use NetPacket::TCP;
 #use LWP::UserAgent;
 #use Proc::ProcessTable;
-# duhen shtu kto
+
 
 #use JSON -support_by_pp;
-
-# funx i refreshit te intervalit cdo x or
-# duhet te njoftohen nyjet ne kohe realet ?
-# problemi i instancave te portave qe hapur
+# TO BE FIXED:
+# the refreshing funx, and the global syncronization in real-time
+# the broadcast globaly funx 
+# if the program is killed sometimes the instances stay open O_O'
 
 
 # here be dragons ---> 
@@ -32,10 +32,11 @@ our @deathlist = ();
 our $mode = lc(read_config("COLDWAR_MODE"));
 our $source_port = 0;
 
-# on debug true we dont populate the IPtables
+# if the debug flag is on, we wont fill up the IPtables 
 # or not
-# change this to 0 to populate iptables
-my $debug = 1;
+# change this to 0 to actually work
+
+my $debug = 0;
 
 my $lockfile = "/tmp/coldwar.lock";
 my $flock;
