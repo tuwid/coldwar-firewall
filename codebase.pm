@@ -23,7 +23,7 @@ use Sys::Syslog;
 # the refreshing funx, and the global syncronization in real-time
 # the broadcast globaly funx 
 # if the program is killed sometimes the instances stay open O_O'
-
+# make it run as a service 
 
 # here be dragons ---> 
 
