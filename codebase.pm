@@ -31,6 +31,13 @@ use Sys::Syslog;
 # if the program is killed sometimes the instances stay open O_O'
 # make it run as a service 
 # define different syslog levels / INFO / ERROR / WARN  
+# the insertion on the main API might be better if done with a queue not real time 
+
+### 
+## TO DO
+# pcap files 
+# web 
+
 
 # here be dragons ---> 
 
@@ -265,8 +272,24 @@ sub block_ip{
 }
 
 sub print_out{
-	my ($message,$ng) = @_;
+	my ($message,$ng,$log_level) = @_;
 	my $ngjyra;
+
+# to be fixed later
+	# if($log_level eq "info"){
+
+	# }
+	# elsif($log_level eq "warning"){
+
+	# }
+	# elsif($log_level eq "error"){
+
+	# }
+	# else{
+	# 	#(!defined($log_level)){
+	# 	$log_level = 'info';
+	# }
+
 
 #		if($debug) {
 			#cool
@@ -669,6 +692,8 @@ sub syn_packets {
     #print $ether_data."\n";	# per me vone kjo me kap payloadin
     add_to_list($ip->{'src_ip'},$tcp->{'dest_port'});
     #print $ether_data."\n";
+	
+    #if(BROADCAST_ALARM)
 	sinjalizo_qendren("SCAN",$source_ip,$dest_port,$source_port);
 }
 
