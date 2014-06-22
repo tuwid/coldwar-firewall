@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 use codebase;
 
-
 # install/uninstall/ sync
 
 my $version = "0.97";
@@ -39,7 +38,9 @@ elsif($ARGV[0] eq "install"){
 		system("cpan install Time::HiRes");
 		system("cpan install DBD::SQLite");
 		system("cpan install JSON");
+		system("cpan install Proc::Daemon");
 		system("perl -MCPAN -e 'notest force install Net::Server::PreFork'");
+		coldwar::print_out("if everything is green its safe to run ./engine.pl start","g");
 		#system("cpan install Net::Pcap");
 	}
 	elsif(-f "/etc/redhat-release"){
@@ -88,6 +89,7 @@ elsif($ARGV[0] eq "check"){
 	coldwar::check_files();
 	coldwar::check_ifroot();
 	coldwar::check_libs();
+	coldwar::print_out("If everything is green, I think its safe to start it","g");
 	exit(1);
 }
 else{

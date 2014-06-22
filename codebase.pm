@@ -10,6 +10,12 @@ use Config;
 use Sys::Syslog;
 
 
+
+
+
+### enable this to put stuff in the background
+#Proc::Daemon::Init;
+
 #use Net::Pcap; # apt-get install libnet-pcap-perl (or something similar, depending on your distro)
 #use NetPacket::Ethernet;
 #use NetPacket::IP;
@@ -24,6 +30,7 @@ use Sys::Syslog;
 # the broadcast globaly funx 
 # if the program is killed sometimes the instances stay open O_O'
 # make it run as a service 
+# define different syslog levels / INFO / ERROR / WARN  
 
 # here be dragons ---> 
 
@@ -36,7 +43,7 @@ our $source_port = 0;
 # or not
 # change this to 0 to actually work
 
-my $debug = 0;
+my $debug = 1;
 
 my $lockfile = "/tmp/coldwar.lock";
 my $flock;
@@ -87,6 +94,7 @@ sub check_libs{
 			"DBD::SQLite",
 			"JSON qw( decode_json )",
 			"Time::HiRes",
+			"Proc::Daemon",
 			"Net::Server::PreFork"
 			);
 
@@ -134,7 +142,13 @@ if(scalar(@ports) eq 0){
 my $test_ports = 1;
 
 foreach my $port (@ports){
-	die "$port" unless check_openport($port);
+	 if(check_openport($port)){
+
+	 }
+	 else{
+	 	print " $port already taken CTRL+C to stop\n";
+	 	exit(1);
+	 }
 }
 
 my $obj = Net::Server::PreFork->run(        
@@ -143,7 +157,7 @@ my $obj = Net::Server::PreFork->run(
 		#log_level => 4,
         ipv => [4]
 		#reverse_lookups => 0
-	) or die "[FAILED se ..nej gjo..]";
+	) or die "[FAILED for some unkown reason]\n";
 
 
 }
@@ -197,7 +211,7 @@ sub check_openport{
 	# which netstat ?
 	my $out = `netstat -an | grep '\*' | grep ":$port " | awk -F" " '{print \$4 }'`;
 	if($out ne ""){
-		print_out("Porta $port eshte e hapur bre byrazer\n","k");
+		print_out("Port $port is currently already open , remove from the config OR stop the program using it\n","k");
 		return 0;
 	}
 	else{
@@ -251,15 +265,14 @@ sub block_ip{
 }
 
 sub print_out{
-	my $message = shift;
-	my $ng = shift;
+	my ($message,$ng) = @_;
 	my $ngjyra;
-#	if defined($ng){
-#		# cool 
-#	}
-#	else{
-#		$ng = "b";
-#	}
+
+#		if($debug) {
+			#cool
+#			print "Got color ".$ng."\n"; 
+#		}
+
 	if(read_config("USE_SYSLOG") eq "YES"){
 		if(read_config("SYSLOG_TYPE") eq "LOCAL"){
 			openlog("COLDWAR", 'cons,pid', 'user');
@@ -271,20 +284,37 @@ sub print_out{
 
 		}
 	}
+
+
 	if($ng eq "k" || $ng eq "r"){
 		$ngjyra =  "\033[31m"; # kuqe
+		if($debug){
+#			print "Color set to red \n";
+		}
 	}
-	if($ng eq "g"){
+	elsif($ng eq "g"){
 		$ngjyra = "\033[32m"; # jeshile
+		if($debug){
+#			print "Color set to green \n";
+		}
 	}
-	if($ng eq "b"){
+	elsif($ng eq "b"){
 		$ngjyra = "\033[0m"; # bardh
+		if($debug){
+#			print "Color set to white \n";
+		}
 	}
-	if($ng eq "o"){
+	elsif($ng eq "o"){
 		$ngjyra = "\033[33m"; # si e verdh
+		if($debug){
+#			print "Color set to yellow \n";
+		}
 	}
 	else{
-		$ngjyra =  "\033[31m";	
+		$ngjyra =  "\033[0m";	
+		if($debug){
+#			print "Color fallback to white \n";
+		}
 	}
 
 	print "$ngjyra $message\n\033[0m";
@@ -467,6 +497,8 @@ sub engine_stop{
 
 sub validate_ip{
 	my $ip = shift;
+
+	### well this seems to get the job done so..
 	if($ip=~/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/ &&(($1<=255  && $2<=255 && $3<=255  &&$4<=255 ))){
     	return 1;
  	}
@@ -711,7 +743,9 @@ sub delete_from_iptbl{
 	my @out = `iptables -L COLDWAR -n --line-numbers | grep -v "target" | grep -v "Chain"`;
 	#my @out = `iptables -L -n`;
 	foreach(@out){
-		if($_ =~ m/^(\d+)(\s+)DROP       all  --  $ip /){
+
+		### we should change the spaces here with \s+
+		if($_ =~ m/^(\d+)(\s+)DROP(\s+)all  --  $ip /){
 			push(@blacked ,$1);
 			#print $1."\n";
 		}
