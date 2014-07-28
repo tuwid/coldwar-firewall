@@ -188,16 +188,16 @@ sub init{
 
 	print_out("Setting mode in $mode \n","g");
 
-	my $pid = fork();
-	if($pid == 0){
-		print_out("Opening ports for monitoring\n","g");
-		honey_start();
-	}
+#	my $honey_pid = fork();
+#	if($honey_pid == 0){
+#		print_out("Opening ports for monitoring\n","g");
+#		honey_start();
+#	}
 
 	# jane te gjitha checket ktu ? (per tu ri-pa)
-	if($debug){
-		print "Pors opened, moving along \n";
-	}
+#	if($debug){
+#		print "Pors opened, moving along \n";
+#	}
 
 
 	engine("start");
