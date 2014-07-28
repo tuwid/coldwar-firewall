@@ -10,16 +10,16 @@ if($ARGV[0] eq "start"){
 	coldwar::init();
 }
 elsif($ARGV[0] eq "stop"){
-	coldwar::engine_stop();
+	coldwar::engine("stop");
 }
 elsif($ARGV[0] eq "restart"){
 	coldwar::print_out("Stopping engine\n","g");
-	coldwar::engine_stop();
+	coldwar::engine("stop");
 	coldwar::print_out("Starting engine\n","g");
 	coldwar::init();
 }
 elsif($ARGV[0] eq "status"){
-	coldwar::engine_status();
+	coldwar::engine("status");
 }
 elsif($ARGV[0] eq "install"){
 	# eshte 1 her ?
@@ -42,6 +42,7 @@ elsif($ARGV[0] eq "install"){
 		system("perl -MCPAN -e 'notest force install Net::Server::PreFork'");
 		coldwar::print_out("if everything is green its safe to run ./engine.pl start","g");
 		#system("cpan install Net::Pcap");
+
 	}
 	elsif(-f "/etc/redhat-release"){
 		# rpm based system
@@ -63,9 +64,16 @@ elsif($ARGV[0] eq "install"){
 			#system("cpan Net::Pcap");
 			}
 	else{
-		print_out("As lame as it seems, we couldnt /are too lazy to detect your OS","g");
+		print_out("As lame as it seems, we couldnt /are_too_lazy_to detect your OS","g");
 		print_out("try installing it by hand:\t libnet-pcap-perl","g");
 	}
+		system("mkdir /opt/coldwar");
+		system("cp bandb.sqlite3 /opt/coldwar/");
+		system("cp coldwar.sh /opt/coldwar/");
+		system("cp engine.pl /opt/coldwar/");
+		system("cp config /opt/coldwar/");
+		system("cp codebase.pm /opt/coldwar/");
+		system("cp README.md /opt/coldwar/");
 	
 	coldwar::check_libs();
 }

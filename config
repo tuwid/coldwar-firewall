@@ -2,12 +2,15 @@
 
 
 # basic config 
-BIND_INTERFACE=lo
-BIND_IP=127.0.0.7
-WHITELIST=127.0.0.3
-#PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3306,3389,5900,2307,2303,10000
-PORTS=21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3389,5900,2307,2303,10000
-# 25
+BIND_INTERFACE=wlan0
+BIND_IP=10.92.42.138
+WHITELIST=127.0.0.1
+
+### use spec for specific port monitoring followed by comas and numbers as below
+PORTS=SPEC,21,22,23,110,143,135,136,137,139,445,1025,1030,1433,1434,1001,3128,3306,3389,5900,2307,2303,10000
+
+### use ALL for all ports and ! for excluding certain ports 
+#PORTS=ALL,!22,!80,!443,!31415
 # carefull with this as it might lock out legit people that use the service
 
 
@@ -20,7 +23,8 @@ BROADCAST_ALARM=YES
 UPLOAD_TO_GLOBAL=YES
 
 # to get all the feeds use this url,
-URL=http://coldwar.zero1.al/
+URL=http://coldwar.zero1.al/attacks/create
+URL_GET=http://coldwar.zero1.al/attacks/
 
 # to get your specific feed 
 #URL=http://coldwar.zero1.al/index.php?action=get&id=[yourid]
