@@ -2,8 +2,8 @@
 
 
 # basic config 
-BIND_INTERFACE=wlan0
-BIND_IP=10.92.42.138
+BIND_INTERFACE=lo
+BIND_IP=127.0.0.7
 WHITELIST=127.0.0.1
 
 ### use spec for specific port monitoring followed by comas and numbers as below
